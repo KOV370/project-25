@@ -47,11 +47,7 @@ public class Account {
 
     @Override
     public String toString() {
-        return "{" +
-                "login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", name='" + name + '\'' +
-                ", tel='" + tel + '\'' +
-                '}';
+        return login + '\\' + password + '\\' + name + '\\' + tel + '\\';
+
     }
 }

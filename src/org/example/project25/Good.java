@@ -20,10 +20,7 @@ public class Good {
 
     @Override
     public String toString() {
-        return
-                "goodsName='" + goodsName + '\'' +
-                ", goodsCode='" + goodsCode + '\'' +
-                ", goodsPrice=" + goodsPrice ;
+        return goodsName + '\\' + goodsCode + '\\' + goodsPrice + '\\';
     }
 
     public Good(String goodsName, String goodsCode, String goodsPrice) {
