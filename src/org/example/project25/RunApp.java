@@ -2,7 +2,6 @@ package org.example.project25;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.ListIterator;
 
 import static java.lang.Character.isDigit;
 
@@ -11,8 +10,8 @@ public class RunApp {
     private static ArrayList<Account> accounts = new ArrayList<>();
     private static String file = "C:\\JetBrains Projects\\Accountdata.txt";
 
-    private static GoodData goodList = new GoodData();
-    private static ArrayList<Good> goods = new ArrayList<>();
+    private static ProductService goodList = new ProductService();
+    private static ArrayList<Product> goods = new ArrayList<>();
     private static String fileGoods = "C:\\JetBrains Projects\\GoodsData.txt";
     private static boolean openAccount = false;
 
@@ -128,7 +127,7 @@ public class RunApp {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (Good e : goods) {
+        for (Product e : goods) {
             try {
                 loadGoodsData.write(e + "\n");
             } catch (IOException ex) {
@@ -152,11 +151,11 @@ public class RunApp {
             e.printStackTrace();
         }
         try {
-            goods.add(GoodData.addNewGoods());
+            goods.add(ProductService.addNewGoods());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        for (Good c : goods) {
+        for (Product c : goods) {
             System.out.println(c);
             try {
                 writeNewGoodsData.write(c + "\n");

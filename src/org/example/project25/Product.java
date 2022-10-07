@@ -1,9 +1,10 @@
 package org.example.project25;
 
-public class Good {
+public class Product {
     private String goodsName;
     private String goodsCode;
     private double goodsPrice;
+
 
     public void setGoodsName(String goodsName) {
         this.goodsName = goodsName;
@@ -23,7 +24,7 @@ public class Good {
         return goodsName + '\\' + goodsCode + '\\' + goodsPrice + '\\';
     }
 
-    public Good(String goodsName, String goodsCode, String goodsPrice) {
+    public Product(String goodsName, String goodsCode, String goodsPrice) {
         this.goodsName = goodsName;
         this.goodsCode = goodsCode;
         this.goodsPrice = Double.parseDouble(String.valueOf(goodsPrice));

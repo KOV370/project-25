@@ -33,7 +33,6 @@ public class AccountService {
             System.out.println("Enter name :");
             String newName = String.valueOf(addNewAccountBuff.readLine());
             System.out.println("Enter tel :");
-            //    Long.parseLong(addNewAccountBuff.readLine());
             String newTel = String.valueOf(addNewAccountBuff.readLine());
             newAccount = new Account(newLogin, newPassword, newName, newTel);
         } catch (IOException e) {
@@ -56,17 +55,16 @@ public class AccountService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        BufferedReader fileReader = null; //чтение из файла почему ноль?
+        BufferedReader fileReader = null; //чтение из файла
         try {
             fileReader = new BufferedReader(new FileReader(file));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         try {
-
             do {
                 lane = fileReader.readLine();
-                System.out.println("lane - " + lane);
+//                System.out.println("lane - " + lane);
                 if (lane == null) {
                     System.out.println("Incorrect login, try again");
                     break;
@@ -76,13 +74,13 @@ public class AccountService {
                     if (enterLogin.equals(loginData)) {
                         rightLogin = true;
                         enterPassword(lane, indexFirstBackslash);
-                        System.out.println(lane);
+             //           System.out.println(lane);
                         break;
                     } else {
                         continue;
                     }
                 }
-            } while (lane.isEmpty() || lane != null);
+            } while (!lane.isEmpty() || lane != null);//todo поставить вместо do
         } catch (IOException e) {
             e.printStackTrace();
         } catch (NullPointerException r) {
@@ -93,17 +91,18 @@ public class AccountService {
 
     private boolean enterPassword(String lane, int indexFirstBackslash) {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));//чтение с клавиатуры
-        int indexSecondBackslash = lane.substring(indexFirstBackslash + 1).indexOf("\\");
+        int indexSecondBackslash = lane.indexOf("\\", indexFirstBackslash+1);
         System.out.println("Enter password");
         String enterPassword = null;
         try {
             enterPassword = bufferedReader.readLine();
         } catch (IOException e) {
             e.printStackTrace();
+            return false;
         }
-        String passwordData = lane.substring(indexFirstBackslash + 1, indexFirstBackslash + indexSecondBackslash + 1);
-        System.out.println("00 " + indexFirstBackslash);
-        System.out.println("01 " + indexSecondBackslash);
+        String passwordData = lane.substring(indexFirstBackslash + 1,  indexSecondBackslash );
+//        System.out.println("00 " + passwordData);
+//        System.out.println("01 " + indexSecondBackslash);
         if (enterPassword.equals(passwordData)) {
             rightPassword = true;
             System.out.println("02 " + rightPassword);
