@@ -9,7 +9,8 @@ public class AccountService {
     boolean rightPassword = false;
     String lane;
 
-    public ArrayList<Account> createDemoData() {
+
+    public ArrayList<Account> createAccountData() {
         ArrayList<Account> newArrayList = new ArrayList<>();
         Account account01 = new Account("qwe123", "123", "Name01", "+380505234501");
         Account account02 = new Account("qwe234", "234", "Name02", "+380505234502");
@@ -25,6 +26,7 @@ public class AccountService {
     public Account addNewAccount() {
         BufferedReader addNewAccountBuff = new BufferedReader(new InputStreamReader(System.in));
         Account newAccount = null;
+        long newTelLong = 0;
         try {
             System.out.println("Enter login :");
             String newLogin = String.valueOf(addNewAccountBuff.readLine());
@@ -33,8 +35,17 @@ public class AccountService {
             System.out.println("Enter name :");
             String newName = String.valueOf(addNewAccountBuff.readLine());
             System.out.println("Enter tel :");
-            String newTel = String.valueOf(addNewAccountBuff.readLine());
-            newAccount = new Account(newLogin, newPassword, newName, newTel);
+            try {
+                newTelLong = Long.parseLong(addNewAccountBuff.readLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Enter correct number of the  phone");//todo как сделать ссылку на перебор при неправильном формате
+//                Long.valueOf(addNewAccountBuff.readLine());
+                //      addNewAccount();//рекурсия - возврат в начало метода при неправильном формате
+            }
+
+            String newTelString = "+" + newTelLong;
+            newAccount = new Account(newLogin, newPassword, newName, newTelString);
+
         } catch (IOException e) {
             System.out.println("!!!!! e.printStackTrace()");
             e.printStackTrace();
@@ -55,16 +66,10 @@ public class AccountService {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        BufferedReader fileReader = null; //чтение из файла
-        try {
-            fileReader = new BufferedReader(new FileReader(file));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
+        BufferedReader fileReader = BuffReaderWriter.fileReading(file); //чтение из файла
         try {
             do {
                 lane = fileReader.readLine();
-//                System.out.println("lane - " + lane);
                 if (lane == null) {
                     System.out.println("Incorrect login, try again");
                     break;
@@ -74,7 +79,7 @@ public class AccountService {
                     if (enterLogin.equals(loginData)) {
                         rightLogin = true;
                         enterPassword(lane, indexFirstBackslash);
-             //           System.out.println(lane);
+                        //           System.out.println(lane);
                         break;
                     } else {
                         continue;
@@ -91,7 +96,7 @@ public class AccountService {
 
     private boolean enterPassword(String lane, int indexFirstBackslash) {
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));//чтение с клавиатуры
-        int indexSecondBackslash = lane.indexOf("\\", indexFirstBackslash+1);
+        int indexSecondBackslash = lane.indexOf("\\", indexFirstBackslash + 1);
         System.out.println("Enter password");
         String enterPassword = null;
         try {
@@ -100,7 +105,7 @@ public class AccountService {
             e.printStackTrace();
             return false;
         }
-        String passwordData = lane.substring(indexFirstBackslash + 1,  indexSecondBackslash );
+        String passwordData = lane.substring(indexFirstBackslash + 1, indexSecondBackslash);
 //        System.out.println("00 " + passwordData);
 //        System.out.println("01 " + indexSecondBackslash);
         if (enterPassword.equals(passwordData)) {

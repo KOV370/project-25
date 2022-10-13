@@ -3,7 +3,6 @@ package org.example.project25;
 import java.io.*;
 import java.util.ArrayList;
 
-import static java.lang.Character.isDigit;
 
 public class RunApp {
     private static AccountService accountService = new AccountService();
@@ -14,6 +13,7 @@ public class RunApp {
     private static ArrayList<Product> goods = new ArrayList<>();
     private static String fileGoods = "C:\\JetBrains Projects\\GoodsData.txt";
     private static boolean openAccount = false;
+    private static String basketFile = "C:\\JetBrains Projects\\BasketData.txt";
 
     public static void main(String[] args) throws Exception {
         System.out.println("Made your choice:");
@@ -55,25 +55,24 @@ public class RunApp {
                 enterToAccount();
                 break;
             case 5://подбор товара в корзину
-                if (enterToAccount()) {   // enterToAccount()=true не проходит
-     //               chosingGoods();
-                }
-            {
-                System.out.println("You have not enter to the account yet");
-                break;}
+                //todo - попытка привязки входа в аккаунт к разрешению выбора товара
+  //              if (enterToAccount()) {
+                    fillBasket();
+//                } else {
+//                    System.out.println("You have not enter to the account yet");
+                    break;
+   //             }
             case 9: {
-
                 System.exit(0);
             }
             default:
                 System.out.println("Mistake with entering - try again");
-
         }
     }
 
     //ввод аккаунтов из списка
     private static void createDemoData() {
-        accounts = accountService.createDemoData();
+        accounts = accountService.createAccountData();
         int i = 0;
         for (Account a : accounts) {
 //            if (i++ == 1){
@@ -96,11 +95,11 @@ public class RunApp {
 
         accounts.add(accountService.addNewAccount());
 
-        try (FileWriter fileWriter = new FileWriter(file, false)) {
+        try (FileWriter fileWriter = new FileWriter(file, true)) {
             for (Account s : accounts) {
                 System.out.println("Added list :" + s);
                 fileWriter.write((s) + "\n");
-                //      fileWriter.append(System.lineSeparator());// todo перенос на новую строку в Buffered Reader
+                //      fileWriter.append(System.lineSeparator());// перенос на новую строку в Buffered Reader
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -110,7 +109,7 @@ public class RunApp {
 
     //ввод списка товаров в лист
     private static void createGooddata() {
-        goods = goodList.goodData();
+        goods = goodList.goodData(); //можно ли сослаться на класс?
 //        ListIterator<Good> listIterator = goods.listIterator();//можно было и не делать
 //        while (listIterator.hasNext()) {
 //            Good x = listIterator.next();
@@ -118,15 +117,9 @@ public class RunApp {
 //        }
     }
 
-    //ввод списка товаров в лист
+    //ввод списка товаров в файл
     private static void loadGoodToFile() {
-
-        FileWriter loadGoodsData = null;
-        try {
-            loadGoodsData = new FileWriter(fileGoods, false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+       FileWriter loadGoodsData = BuffReaderWriter.writeToFile(fileGoods,true);
         for (Product e : goods) {
             try {
                 loadGoodsData.write(e + "\n");
@@ -144,17 +137,8 @@ public class RunApp {
 
     //создание нового товара и добавление его во внешний файл
     private static void addGooddata() {
-        FileWriter writeNewGoodsData = null;
-        try {
-            writeNewGoodsData = new FileWriter(fileGoods, false);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            goods.add(ProductService.addNewGoods());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        FileWriter writeNewGoodsData = BuffReaderWriter.writeToFile(fileGoods,true);
+        goods.add(ProductService.addNewGoods());
         for (Product c : goods) {
             System.out.println(c);
             try {
@@ -175,8 +159,9 @@ public class RunApp {
         System.out.println("Your access to the account - " + openAccount);
         return openAccount;
     }
-//    private static Good choosingGoods(){
-//
-//    }
+
+    private static void fillBasket() {
+        BasketService.addProduct(BasketService.copyProductData(fileGoods), basketFile);
+    }
 }
 

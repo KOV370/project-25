@@ -6,12 +6,12 @@ public class Product {
     private double goodsPrice;
 
 
-    public void setGoodsName(String goodsName) {
-        this.goodsName = goodsName;
+    public void setGoodsName(String goodsCode) {
+        this.goodsCode = goodsCode;
     }
 
-    public void setGoodsCode(String goodsCode) {
-        this.goodsCode = goodsCode;
+    public void setGoodsCode(String goodsName) {
+        this.goodsName = goodsName;
     }
 
     public void setGoodsPrice(double goodsPrice) {
@@ -21,12 +21,12 @@ public class Product {
 
     @Override
     public String toString() {
-        return goodsName + '\\' + goodsCode + '\\' + goodsPrice + '\\';
+        return goodsCode + '\\' + goodsName + '\\' + goodsPrice +"*";
     }
 
-    public Product(String goodsName, String goodsCode, String goodsPrice) {
-        this.goodsName = goodsName;
+    public Product(String goodsCode, String goodsName, Double goodsPrice) {
         this.goodsCode = goodsCode;
+        this.goodsName = goodsName;
         this.goodsPrice = Double.parseDouble(String.valueOf(goodsPrice));
     }
     public String getGoodsName() {
