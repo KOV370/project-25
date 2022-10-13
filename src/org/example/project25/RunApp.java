@@ -11,7 +11,7 @@ public class RunApp {
 
     private static ProductService goodList = new ProductService();
     private static ArrayList<Product> goods = new ArrayList<>();
-    private static String fileGoods = "C:\\JetBrains Projects\\GoodsData.txt";
+
     private static boolean openAccount = false;
     private static String basketFile = "C:\\JetBrains Projects\\BasketData.txt";
 
