@@ -40,9 +40,7 @@ public class BuffReaderWriter {
         if (consoleReading() == String.valueOf(21)) {
            return;
         }
-
     }
-
     public static String getFile() {
         return file;
     }

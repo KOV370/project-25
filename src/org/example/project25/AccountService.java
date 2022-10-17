@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class AccountService {
     String file;
-    boolean rightLogin = false;
-    boolean rightPassword = false;
+    boolean correctLogin = false;
+    boolean correctPassword = false;
     String lane;
 
 
@@ -46,55 +46,64 @@ public class AccountService {
             String newTelString = "+" + newTelLong;
             newAccount = new Account(newLogin, newPassword, newName, newTelString);
 
-        } catch (IOException e) {
+        }  catch (NumberFormatException e) {
+            System.out.println("Enter right number - not figures");
+        } catch (NullPointerException r) {
+            System.out.println("Enter right number - null");
+        }
+        catch (IOException e) {
             System.out.println("!!!!! e.printStackTrace()");
             e.printStackTrace();
-        } catch (NumberFormatException e) {
-            System.out.println("Enter right number");
-        } catch (NullPointerException r) {
-            System.out.println("Enter right number");
         }
         return newAccount;
     }
 
     public boolean enterLogin(String file) {
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));//чтение с клавиатуры
-        System.out.println("Enter login");
-        String enterLogin = null;
-        try {
-            enterLogin = bufferedReader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        BufferedReader fileReader = BuffReaderWriter.fileReading(file); //чтение из файла
-        try {
-            do {
-                lane = fileReader.readLine();
-                if (lane == null) {
-                    System.out.println("Incorrect login, try again");
-                    break;
-                } else {
-                    int indexFirstBackslash = lane.indexOf("\\");
-                    String loginData = lane.substring(0, indexFirstBackslash);
-                    if (enterLogin.equals(loginData)) {
-                        rightLogin = true;
-                        enterPassword(lane, indexFirstBackslash);
-                        //           System.out.println(lane);
+        if (correctPassword) {
+            System.out.println("You entered the account, it does not need enter again.");
+        } else {
+            correctLogin = false;
+            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));//чтение с клавиатуры
+            System.out.println("Enter login");
+            String enterLogin = null;
+            try {
+                enterLogin = bufferedReader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            BufferedReader fileReader = BuffReaderWriter.fileReading(file); //чтение из файла
+            try {
+                do {
+                    lane = fileReader.readLine();
+                    if (lane == null) {
+                        correctPassword = false;
+                        System.out.println("Incorrect login, try again with choice of operation.");
                         break;
                     } else {
-                        continue;
+                        int indexFirstBackslash = lane.indexOf("\\");
+                        String loginData = lane.substring(0, indexFirstBackslash);
+                        if (enterLogin.equals(loginData)) {
+                            correctLogin = true;
+                            enterPassword(lane, indexFirstBackslash);
+                            //           System.out.println(lane);
+                            break;
+                        } else {
+                            continue;
+                        }
                     }
-                }
-            } while (!lane.isEmpty() || lane != null);//todo поставить вместо do
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NullPointerException r) {
-            System.out.println("Mistake entering");
+                } while (!lane.isEmpty() || lane != null);//todo поставить вместо do
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (NullPointerException r) {
+                System.out.println("Mistake entering");
+            }
         }
-        return rightPassword;
+        return correctPassword;
     }
 
+
     private boolean enterPassword(String lane, int indexFirstBackslash) {
+        correctPassword = false;
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));//чтение с клавиатуры
         int indexSecondBackslash = lane.indexOf("\\", indexFirstBackslash + 1);
         System.out.println("Enter password");
@@ -109,10 +118,10 @@ public class AccountService {
 //        System.out.println("00 " + passwordData);
 //        System.out.println("01 " + indexSecondBackslash);
         if (enterPassword.equals(passwordData)) {
-            rightPassword = true;
-            System.out.println("02 " + rightPassword);
+            correctPassword = true;
+            System.out.println("02 " + correctPassword);
         } else
             System.out.println("Password incorrect");
-        return rightPassword;
+        return correctPassword;
     }
 }
