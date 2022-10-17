@@ -1,6 +1,7 @@
 package org.example.project25.service;
 
 import org.example.project25.BuffReaderWriter;
+import org.example.project25.model.BasketProduct;
 import org.example.project25.model.Product;
 
 import java.io.*;
@@ -14,9 +15,7 @@ public class BasketService {
         BufferedReader bufferedReader = BuffReaderWriter.fileReading(fileListProduct);
         try {
             String readingLane;
-
             do {
-                assert bufferedReader != null;
                 readingLane = bufferedReader.readLine();
                 if (readingLane != null) {
                     arrayProductData.add(readingLane);
@@ -28,7 +27,6 @@ public class BasketService {
         } catch (NullPointerException t) {
             System.out.println("Loading has finished");
         }
-        // почему не выводит ArrayList???
         return arrayProductData;
     }
 
@@ -42,8 +40,12 @@ public class BasketService {
         if (foundedProduct == null) {
             System.out.println("Product not found.");//todo throw RuntimeException
         }
-        // add found product ot basket
+        // add found product of basket
         //todo добавить новый  basketProduct в класс Basket + количество
+        BasketProduct basketProducts = new BasketProduct(foundedProduct, quantity);
+        List<BasketProduct> basketProductList = new ArrayList<>();
+        basketProductList.add(basketProducts);
+        //может нужно в return вывести basketProductList?
     }
 
     public static void addProductToBasketOld(List<String> products, String basketFile) {
