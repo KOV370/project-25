@@ -10,7 +10,6 @@ public class AccountService {
     String file;
     boolean correctLogin = false;
     boolean correctPassword = false;
-    String lane;
 
 
     public ArrayList<Account> createAccountData() {
@@ -49,12 +48,11 @@ public class AccountService {
             String newTelString = "+" + newTelLong;
             newAccount = new Account(newLogin, newPassword, newName, newTelString);
 
-        }  catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             System.out.println("Enter right number - not figures");
         } catch (NullPointerException r) {
             System.out.println("Enter right number - null");
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             System.out.println("!!!!! e.printStackTrace()");
             e.printStackTrace();
         }
@@ -76,13 +74,10 @@ public class AccountService {
             }
             BufferedReader fileReader = BuffReaderWriter.fileReading(file); //чтение из файла
             try {
-                do {
-                    lane = fileReader.readLine();
-                    if (lane == null) {
+                String lane;
+                while ((lane = fileReader.readLine())!= null && !lane.isBlank()) {
                         correctPassword = false;
                         System.out.println("Incorrect login, try again with choice of operation.");
-                        break;
-                    } else {
                         int indexFirstBackslash = lane.indexOf("\\");
                         String loginData = lane.substring(0, indexFirstBackslash);
                         if (enterLogin.equals(loginData)) {
@@ -94,7 +89,8 @@ public class AccountService {
                             continue;
                         }
                     }
-                } while (!lane.isEmpty() || lane != null);//todo поставить вместо do
+
+                ;//todo поставить вместо do
             } catch (IOException e) {
                 e.printStackTrace();
             } catch (NullPointerException r) {

@@ -1,5 +1,7 @@
 package org.example.project25.service;
+
 import org.example.project25.BuffReaderWriter;
+import org.example.project25.model.Product;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -30,19 +32,26 @@ public class BasketService {
         return arrayProductData;
     }
 
+    public static void addProductToBasket(List<Product> products, String productCode, int quantity) {
+        Product foundedProduct = null;
+        for (Product product : products) {
+            if (product.getCode().equals(productCode)) {
+                foundedProduct = product;
+            }
+        }
+        if (foundedProduct == null) {
+            System.out.println("Product not found.");//todo throw RuntimeException
+        }
+        // add found product ot basket
+        //todo добавить новый  basketProduct в класс Basket + количество
+    }
 
-    public static void addProduct(List<String> products, String basketFile) {
+    public static void addProductToBasketOld(List<String> products, String basketFile) {
         double itogSum = 0.0;
         int itogQuantity = 0;
         int enterQuantity;
         String lane;
         boolean finishSeeking = false;
-        //попытка выйти из подбора
-//        if (BuffReaderWriter.consoleReading() == String.valueOf(8)) {
-//            System.exit(0);
-//            return;
-//        } else {
-
         System.out.println("Choose the code of product");
         String enterCode = BuffReaderWriter.consoleReading();//чтение кода с консоли
         for (int i = 0; i < products.size(); i++) {
@@ -81,7 +90,7 @@ public class BasketService {
             }
         }
         System.out.println("Enter correct code or 21 - exit");
-  //      addProduct(products, basketFile);//рекурсия
+        //      addProduct(products, basketFile);//рекурсия
     }
 }
 

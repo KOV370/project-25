@@ -15,7 +15,7 @@ public class RunApp {
     private static ArrayList<Account> accounts = new ArrayList<>();
     private static String file = "C:\\JetBrains Projects\\Accountdata.txt";
 
-    private static ProductService goodList = new ProductService();
+    private static ProductService productService = new ProductService(new ProductFileRepository());
     private static ArrayList<Product> goods = new ArrayList<>();
 
     private static boolean openAccount = false;
@@ -113,12 +113,7 @@ public class RunApp {
 
     //ввод списка товаров в лист
     private static void createGooddata() {
-        goods = goodList.goodData(); //можно ли сослаться на класс?
-//        ListIterator<Good> listIterator = goods.listIterator();//можно было и не делать
-//        while (listIterator.hasNext()) {
-//            Good x = listIterator.next();
-//            System.out.println(x);
-//        }
+        goods = productService.initializeProductsData(); //можно ли сослаться на класс?
     }
 
     //ввод списка товаров в файл
@@ -166,7 +161,7 @@ public class RunApp {
     }
 
     private static void fillBasket() {
-        BasketService.addProduct(BasketService.copyProductData(ProductFileRepository.getFileGoods()), basketFile);
+        BasketService.addProductToBasketOld(BasketService.copyProductData(ProductFileRepository.getFileGoods()), basketFile);
     }
 }
 

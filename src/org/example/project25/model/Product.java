@@ -32,7 +32,7 @@ public class Product {
         return goodsName;
     }
 
-    public String getGoodsCode() {
+    public String getCode() {
         return goodsCode;
     }
 

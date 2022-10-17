@@ -1,26 +1,33 @@
 package org.example.project25.service;
 
 import org.example.project25.model.Product;
+import org.example.project25.repository.ProductRepository;
 
 import java.io.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProductService {
-    static boolean correctPrice = true;
+    private ProductRepository productRepository;
 
-   public static ArrayList<Product> goodData() {
-        ArrayList<Product> goodList = new ArrayList<>();
-        goodList.add(new Product("4", "rgvvvvvc", new BigDecimal(453.44).setScale(2, RoundingMode.HALF_UP)));
-        goodList.add(new Product("2", "efogfo,k", new BigDecimal(34.22).setScale(2, RoundingMode.HALF_UP)));
-        goodList.add(new Product("1", ",xf.px.x", new BigDecimal(8900.11).setScale(2, RoundingMode.HALF_UP)));
-        goodList.add(new Product("3", "rqerc", new BigDecimal(3346.33).setScale(2, RoundingMode.HALF_UP)));
+    public ProductService(ProductRepository productRepository) {
+        this.productRepository = productRepository;
+    }
+
+    public static ArrayList<Product> initializeProductsData() {//todo remove static
+        ArrayList<Product> products = new ArrayList<>();
+        products.add(new Product("4", "rgvvvvvc", new BigDecimal(453.44).setScale(2, RoundingMode.HALF_UP)));
+        products.add(new Product("2", "efogfo,k", new BigDecimal(34.22).setScale(2, RoundingMode.HALF_UP)));
+        products.add(new Product("1", ",xf.px.x", new BigDecimal(8900.11).setScale(2, RoundingMode.HALF_UP)));
+        products.add(new Product("3", "rqerc", new BigDecimal(3346.33).setScale(2, RoundingMode.HALF_UP)));
         System.out.println("List of goods added successfully");
-        return goodList;
+        return products;
     }
 
     public static Product addNewGoods() {
+        boolean correctPrice = true;//todo remove
         BufferedReader readNewGoods = new BufferedReader(new InputStreamReader(System.in));
         Product good;
         correctPrice = true;//сброс указателя в начальное состояние
@@ -61,6 +68,10 @@ public class ProductService {
         } else
             good = new Product(newGoodsCode, newGoodsName, newGoodsPrice);
         return good;
+    }
+
+    public List<Product> listAllProducts() {
+        return productRepository.readAllProducts();
     }
 }
 
