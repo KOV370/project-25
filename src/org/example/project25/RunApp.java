@@ -1,8 +1,9 @@
 package org.example.project25;
 
+import org.example.project25.repository.ProductFileRepository;
+
 import java.io.*;
 import java.util.ArrayList;
-
 
 public class RunApp {
     private static AccountService accountService = new AccountService();
@@ -39,7 +40,7 @@ public class RunApp {
     private static void choiceMenu(int readNumber) {
         switch (readNumber) {
             case 0: //ввод аккаунтов из списка
-                createDemoData();
+                loadAccountData();
                 break;
             case 1://создание нового аккаунта и вывод его во внешний файл и в список
                 loadToFileCurrentAccount();
@@ -55,13 +56,13 @@ public class RunApp {
                 enterToAccount();
                 break;
             case 5://подбор товара в корзину
-                //todo - попытка привязки входа в аккаунт к разрешению выбора товара
-  //              if (enterToAccount()) {
+                if (openAccount) {    //привязка входа в аккаунт к разрешению выбора товара
                     fillBasket();
-//                } else {
-//                    System.out.println("You have not enter to the account yet");
+                } else {
+                    System.out.println("You have not entered to the account yet");
                     break;
-   //             }
+                }
+                break;
             case 9: {
                 System.exit(0);
             }
@@ -71,7 +72,7 @@ public class RunApp {
     }
 
     //ввод аккаунтов из списка
-    private static void createDemoData() {
+    private static void loadAccountData() {
         accounts = accountService.createAccountData();
         int i = 0;
         for (Account a : accounts) {
@@ -92,19 +93,17 @@ public class RunApp {
 
     //создание нового аккаунта и вывод его во внешний файл и в список
     private static void loadToFileCurrentAccount() {
-
-        accounts.add(accountService.addNewAccount());
+        Account newAccount = accountService.addNewAccount();
+        accounts.add(newAccount);
 
         try (FileWriter fileWriter = new FileWriter(file, true)) {
-            for (Account s : accounts) {
-                System.out.println("Added list :" + s);
-                fileWriter.write((s) + "\n");
-                //      fileWriter.append(System.lineSeparator());// перенос на новую строку в Buffered Reader
-            }
+            fileWriter.write(newAccount + "\n");
+            System.out.println("Added list :" + newAccount);
+            System.out.println("Choose the next operation or push 9 for exit.");
+            //      fileWriter.append(System.lineSeparator());// перенос на новую строку в Buffered Reader
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     //ввод списка товаров в лист
@@ -119,7 +118,7 @@ public class RunApp {
 
     //ввод списка товаров в файл
     private static void loadGoodToFile() {
-       FileWriter loadGoodsData = BuffReaderWriter.writeToFile(fileGoods,true);
+        FileWriter loadGoodsData = BuffReaderWriter.writeToFile(ProductFileRepository.getFileGoods(), true);
         for (Product e : goods) {
             try {
                 loadGoodsData.write(e + "\n");
@@ -137,21 +136,22 @@ public class RunApp {
 
     //создание нового товара и добавление его во внешний файл
     private static void addGooddata() {
-        FileWriter writeNewGoodsData = BuffReaderWriter.writeToFile(fileGoods,true);
-        goods.add(ProductService.addNewGoods());
-        for (Product c : goods) {
-            System.out.println(c);
+        FileWriter writeNewGoodsData = BuffReaderWriter.writeToFile(ProductFileRepository.getFileGoods(), true);
+        Product newProduct = ProductService.addNewGoods();
+        if (newProduct != null) {
+            goods.add(newProduct);
             try {
-                writeNewGoodsData.write(c + "\n");
+                writeNewGoodsData.write(newProduct + "\n");
+                System.out.println(newProduct + " - added successfully.");
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        try {
-            writeNewGoodsData.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            try {
+                writeNewGoodsData.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else System.out.println("You have returned to the main menu.");
     }
 
     private static boolean enterToAccount() {
@@ -161,7 +161,7 @@ public class RunApp {
     }
 
     private static void fillBasket() {
-        BasketService.addProduct(BasketService.copyProductData(fileGoods), basketFile);
+        BasketService.addProduct(BasketService.copyProductData(ProductFileRepository.getFileGoods()), basketFile);
     }
 }
 

@@ -1,18 +1,19 @@
 package org.example.project25;
 
 import java.io.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.List;
 
 public class ProductService {
-
+    static boolean correctPrice = true;
 
     static ArrayList<Product> goodData() {
         ArrayList<Product> goodList = new ArrayList<>();
-        goodList.add(new Product("4", "rgvvvvvc", 453.44));
-        goodList.add(new Product("2", "efogfo,k", 34.22));
-        goodList.add(new Product("1", ",xf.px.x", 8900.11));
-        goodList.add(new Product("3", "rqerc", 3346.33));
+        goodList.add(new Product("4", "rgvvvvvc", new BigDecimal(453.44).setScale(2, RoundingMode.HALF_UP)));
+        goodList.add(new Product("2", "efogfo,k", new BigDecimal(34.22).setScale(2, RoundingMode.HALF_UP)));
+        goodList.add(new Product("1", ",xf.px.x", new BigDecimal(8900.11).setScale(2, RoundingMode.HALF_UP)));
+        goodList.add(new Product("3", "rqerc", new BigDecimal(3346.33).setScale(2, RoundingMode.HALF_UP)));
         System.out.println("List of goods added successfully");
         return goodList;
     }
@@ -20,6 +21,7 @@ public class ProductService {
     public static Product addNewGoods() {
         BufferedReader readNewGoods = new BufferedReader(new InputStreamReader(System.in));
         Product good;
+        correctPrice = true;//сброс указателя в начальное состояние
         System.out.println("Enter goodsCode");
         String newGoodsCode = null;
         try {
@@ -35,23 +37,27 @@ public class ProductService {
             e.printStackTrace();
         }
         System.out.println("Enter goodsPrice");
-        Double newGoodsPrice = null; //как ввести цифры double
+        BigDecimal newGoodsPrice = null;
         try {
-            newGoodsPrice = Double.valueOf(readNewGoods.readLine());
+            newGoodsPrice = new BigDecimal(readNewGoods.readLine());
         } catch (NumberFormatException r) {
-            System.out.println("It is not a figures, try enter goodsPrice again.");//todo как при неправильном вводе вернуться к вводу цены, а не вводу нового товара?
+            System.out.println("It is not a figures, try enter goodsPrice again.");
             try {
-                newGoodsPrice = Double.valueOf(readNewGoods.readLine()); //вторая попытка вводо цены
-            }catch (NumberFormatException y){
+                newGoodsPrice = new BigDecimal(readNewGoods.readLine()); //вторая попытка вводо цены
+            } catch (NumberFormatException y) {
+                correctPrice = false;
                 System.out.println("It is second mistake, try new product.");
-            }
-            catch (IOException e) {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
-        good = new Product(newGoodsCode, newGoodsName, newGoodsPrice);
+        if (!correctPrice) {
+            System.out.println("Enter new product again.");
+            good = null;
+        } else
+            good = new Product(newGoodsCode, newGoodsName, newGoodsPrice);
         return good;
     }
 }

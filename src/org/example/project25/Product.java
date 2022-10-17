@@ -1,10 +1,10 @@
 package org.example.project25;
+import java.math.BigDecimal;
 
 public class Product {
     private String goodsName;
     private String goodsCode;
-    private double goodsPrice;
-
+    private BigDecimal goodsPrice;
 
     public void setGoodsName(String goodsCode) {
         this.goodsCode = goodsCode;
@@ -14,20 +14,19 @@ public class Product {
         this.goodsName = goodsName;
     }
 
-    public void setGoodsPrice(double goodsPrice) {
+    public void setGoodsPrice(BigDecimal goodsPrice) {
         this.goodsPrice = goodsPrice;
     }
-
 
     @Override
     public String toString() {
         return goodsCode + '\\' + goodsName + '\\' + goodsPrice +"*";
     }
 
-    public Product(String goodsCode, String goodsName, Double goodsPrice) {
+    public Product(String goodsCode, String goodsName, BigDecimal goodsPrice) {
         this.goodsCode = goodsCode;
         this.goodsName = goodsName;
-        this.goodsPrice = Double.parseDouble(String.valueOf(goodsPrice));
+        this.goodsPrice = goodsPrice;
     }
     public String getGoodsName() {
         return goodsName;
@@ -37,7 +36,7 @@ public class Product {
         return goodsCode;
     }
 
-    public double getGoodsPrice() {
+    public BigDecimal getGoodsPrice() {
         return goodsPrice;
     }
 
