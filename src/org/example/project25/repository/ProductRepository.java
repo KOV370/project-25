@@ -1,6 +1,6 @@
 package org.example.project25.repository;
 
-import org.example.project25.Product;
+import org.example.project25.model.Product;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package org.example.project25;
+package org.example.project25.model;
 
 public class Account {
     private String login;

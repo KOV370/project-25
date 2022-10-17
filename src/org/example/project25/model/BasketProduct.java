@@ -1,4 +1,6 @@
-package org.example.project25;
+package org.example.project25.model;
+
+import org.example.project25.model.Product;
 
 public class BasketProduct {
     private Product product;

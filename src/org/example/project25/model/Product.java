@@ -1,4 +1,4 @@
-package org.example.project25;
+package org.example.project25.model;
 import java.math.BigDecimal;
 
 public class Product {

@@ -1,5 +1,5 @@
 package org.example.project25.repository;
-import org.example.project25.Product;
+import org.example.project25.model.Product;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;

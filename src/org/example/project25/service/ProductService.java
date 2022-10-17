@@ -1,4 +1,6 @@
-package org.example.project25;
+package org.example.project25.service;
+
+import org.example.project25.model.Product;
 
 import java.io.*;
 import java.math.BigDecimal;
@@ -8,7 +10,7 @@ import java.util.ArrayList;
 public class ProductService {
     static boolean correctPrice = true;
 
-    static ArrayList<Product> goodData() {
+   public static ArrayList<Product> goodData() {
         ArrayList<Product> goodList = new ArrayList<>();
         goodList.add(new Product("4", "rgvvvvvc", new BigDecimal(453.44).setScale(2, RoundingMode.HALF_UP)));
         goodList.add(new Product("2", "efogfo,k", new BigDecimal(34.22).setScale(2, RoundingMode.HALF_UP)));
